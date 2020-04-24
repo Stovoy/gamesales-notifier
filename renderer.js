@@ -25,18 +25,19 @@ function flash() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    let i = 0;
     startPolling((submission) => {
         const creationTime = moment.unix(submission.created_utc).tz('America/Los_Angeles').format('MM/DD/YYYY h:mm a');
 
         const list = document.getElementById('links');
         const item = document.createElement('li');
         const link = document.createElement('a');
-        const text = i + creationTime + ": " + submission.title;
+        const text = `${creationTime} - ${submission.title}`;
         link.appendChild(document.createTextNode(text));
         link.href = submission.url;
         item.appendChild(link);
         list.prepend(item);
+
+        window.ipcRenderer.send('sendSms', `${creationTime} - ${submission.title}: ${submission.url}`);
 
         flash();
     });
