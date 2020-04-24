@@ -1,0 +1,3 @@
+# Reddit processer and notifier for any Ring Fit Adventure sales
+
+I really want to get Ring Fit Adventure...

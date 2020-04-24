@@ -1,0 +1,16 @@
+{
+  "name": "gamesales-notifier",
+  "version": "0.0.1",
+  "description": "Notifier that parses reddit.com/r/GameSales for Ring Fit Adventure posts",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^8.2.3",
+    "electron-main-window": "^1.0.4",
+    "moment-timezone": "^0.5.28",
+    "snoowrap": "^1.21.0"
+  }
+}
