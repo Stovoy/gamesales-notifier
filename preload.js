@@ -13,6 +13,10 @@ const reddit = new snoowrap({
 
 let seenIds = {};
 const searchTerms = ['ring fit adventure', 'rfa', 'ring fit', 'ringfit', 'ringfitadventure', 'fitadventure', 'ring'];
+const searchRegexes = [];
+for (let searchTerm of searchTerms) {
+    searchRegexes.push(RegExp(`\\b${searchTerm}\\b`, 'g'));
+}
 
 window.startPolling = (callback) => {
     setInterval(() => {
@@ -24,8 +28,8 @@ window.startPolling = (callback) => {
                 }
                 seenIds[submission.id] = submission;
                 const text = (submission.title + " " + submission.selftext).toLowerCase();
-                for (let searchTerm of searchTerms) {
-                    if (text.includes(searchTerm)) {
+                for (let searchRegex of searchRegexes) {
+                    if (searchRegex.test(text)) {
                         callback(submission);
                         break;
                     }
