@@ -11,29 +11,39 @@ const reddit = new snoowrap({
     clientSecret: secrets.reddit.clientSecret,
     refreshToken: secrets.reddit.refreshToken,
 });
-let seenIds = {};
 const searchTerms = ['ring fit adventure', 'rfa', 'ring fit', 'ringfit', 'ringfitadventure', 'fitadventure', 'ring'];
 const searchRegexes = [];
 for (let searchTerm of searchTerms) {
     searchRegexes.push(RegExp(`\\b${searchTerm}\\b`, 'g'));
 }
 
+if (!fs.existsSync('./seen.json')) {
+    fs.writeFileSync('./seen.json', '[]');
+}
+const seenPosts = new Set();
+const seenRelevantPosts = new Set(JSON.parse(fs.readFileSync('./seen.json', 'utf8')));
 window.startPolling = (callback) => {
     setInterval(() => {
         reddit.getSubreddit('GameSale').getNew().then(submissions => {
+            let foundNew = false;
             for (let i = submissions.length - 1; i >= 0; i--) {
                 const submission = submissions[i];
-                if (submission.id in seenIds) {
+                if (seenRelevantPosts.has(submission.id) || seenPosts.has(submission.id)) {
                     continue;
                 }
-                seenIds[submission.id] = submission;
+                seenPosts.add(submission.id);
                 const text = (submission.title + " " + submission.selftext).toLowerCase();
                 for (let searchRegex of searchRegexes) {
                     if (searchRegex.test(text)) {
+                        foundNew = true;
+                        seenRelevantPosts.add(submission.id);
                         callback(submission);
                         break;
                     }
                 }
+            }
+            if (foundNew) {
+                fs.writeFileSync('./seen.json', JSON.stringify(Array.from(seenRelevantPosts)));
             }
         });
     }, 1000);
