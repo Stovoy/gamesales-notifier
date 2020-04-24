@@ -24,15 +24,11 @@ window.startPolling = (callback) => {
                 }
                 seenIds[submission.id] = submission;
                 const text = (submission.title + " " + submission.selftext).toLowerCase();
-                let found = false;
                 for (let searchTerm of searchTerms) {
                     if (text.includes(searchTerm)) {
-                        found = true;
+                        callback(submission);
                         break;
                     }
-                }
-                if (found) {
-                    callback(submission);
                 }
             }
         });
