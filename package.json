@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "electron": "^8.2.3",
+    "electron": "^8.2.4",
     "electron-main-window": "^1.0.4",
     "moment-timezone": "^0.5.28",
     "snoowrap": "^1.21.0",
