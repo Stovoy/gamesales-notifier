@@ -10,7 +10,7 @@
   "dependencies": {
     "electron": "^8.2.3",
     "electron-main-window": "^1.0.4",
-    "moment-timezone": "^0.5.28",
+    "moment-timezone": "^0.5.35",
     "snoowrap": "^1.21.0",
     "twilio": "^3.42.2"
   }
